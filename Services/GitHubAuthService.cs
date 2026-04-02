@@ -16,6 +16,12 @@ internal sealed class GitHubAuthService
 	private const string GrantType = "urn:ietf:params:oauth:grant-type:device_code";
 	private const string Scope = "read:user copilot";
 
+	/// <summary>
+	/// Built-in Client ID for the "Copilot Usage" GitHub OAuth App.
+	/// Used when no custom Client ID is configured in settings.
+	/// </summary>
+	private const string DefaultClientId = "Ov23liUmQyKcSK7753nt";
+
 	private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
 	private readonly HttpClient m_HttpClient;
@@ -24,7 +30,7 @@ internal sealed class GitHubAuthService
 
 	public GitHubAuthService( string? clientId )
 	{
-		m_ClientId = clientId?.Trim() ?? string.Empty;
+		m_ClientId = string.IsNullOrWhiteSpace( clientId ) ? DefaultClientId : clientId.Trim();
 		m_HttpClient = new HttpClient();
 		m_HttpClient.DefaultRequestHeaders.Accept.Add(
 			new MediaTypeWithQualityHeaderValue( "application/json" ) );
@@ -35,14 +41,6 @@ internal sealed class GitHubAuthService
 
 	public async Task<DeviceCodeResponse> RequestDeviceCodeAsync( CancellationToken ct = default )
 	{
-		if ( string.IsNullOrWhiteSpace( m_ClientId ) )
-		{
-			throw new InvalidOperationException(
-				"No GitHub OAuth App Client ID configured.\n\n" +
-				"Register an OAuth App at github.com/settings/applications/new, enable 'Device Flow', " +
-				"and paste the Client ID in Settings → Advanced." );
-		}
-
 		var content = new FormUrlEncodedContent( new Dictionary<string, string>
 		{
 			["client_id"] = m_ClientId,

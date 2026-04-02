@@ -33,10 +33,8 @@ A lightweight Windows system tray application that visually shows how much of yo
 3. Click **Authorize with GitHub**.
    - A device code is copied to your clipboard automatically.
    - Your browser opens `github.com/login/device`.
-   - Paste the code and authorise the application.
+   - Paste the code and authorise **Copilot Usage**.
 4. Click **Save**. The app fetches your usage data immediately.
-
-> **Note:** The app uses GitHub's OAuth Device Flow with the public GitHub CLI client ID. If your organisation restricts third-party OAuth apps, enter your own OAuth App client ID in the **Custom Client ID** field before authorising.
 
 ### Subsequent runs
 
@@ -48,9 +46,13 @@ The app uses it automatically. No re-authorisation is needed until the token is 
 
 ### Re-authorising
 
-1. Right-click the tray → **Settings** → **Revoke / Re-authorize**.  
+1. Right-click the tray → **Settings** → **Re-authorize with GitHub…**  
    Or delete `%APPDATA%\CopilotUsage\settings.json` manually.
 2. Follow the first-run steps above.
+
+> **Advanced:** If your organisation's GitHub policy blocks the built-in Copilot Usage OAuth App,
+> you can register your own app at `github.com/settings/applications/new` (enable Device Flow) and
+> set `"GitHubClientId": "YOUR_CLIENT_ID"` in `%APPDATA%\CopilotUsage\settings.json` manually.
 
 ---
 

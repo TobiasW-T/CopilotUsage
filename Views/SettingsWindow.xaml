@@ -18,44 +18,20 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- GitHub Authorization heading -->
         <TextBlock Grid.Row="0" Text="GitHub Authorization" FontWeight="SemiBold" Margin="0,0,0,8"/>
 
-        <!-- OAuth App Client ID -->
-        <StackPanel Grid.Row="1" Margin="0,0,0,10">
-            <Grid Margin="0,0,0,4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="GitHub OAuth App Client ID" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" FontSize="11" Foreground="#6C757D" VerticalAlignment="Center">
-                    <Hyperlink NavigateUri="https://github.com/settings/applications/new"
-                               RequestNavigate="Hyperlink_RequestNavigate">Register app ↗</Hyperlink>
-                </TextBlock>
-            </Grid>
-            <TextBox x:Name="ClientIdTextBox"
-                     FontFamily="Consolas" FontSize="12"
-                     Padding="6,4"/>
-            <TextBlock TextWrapping="Wrap" Foreground="#6C757D" FontSize="11" Margin="0,4,0,0">
-                Register an OAuth App on GitHub, set any Homepage/Callback URL, and enable
-                <Bold>Device Flow</Bold>. Paste the Client ID here. The GitHub authorization
-                page will then show your app name (e.g. "Copilot Usage") instead of "GitHub CLI".
-            </TextBlock>
-        </StackPanel>
-
         <!-- Authorization status panel -->
-        <Border Grid.Row="2"
+        <Border Grid.Row="1"
                 Background="#F8F9FA" BorderBrush="#DEE2E6" BorderThickness="1"
                 CornerRadius="4" Padding="12,10" Margin="0,0,0,12">
             <StackPanel>
 
                 <!-- Status message -->
                 <TextBlock x:Name="AuthStatusText"
-                           Text="Not authorized. Enter a Client ID above, then click the button below."
+                           Text="Not authorized. Click the button below to authorize with GitHub."
                            TextWrapping="Wrap" Foreground="#495057" FontSize="12" Margin="0,0,0,8"/>
 
                 <!-- Device code display (hidden until device flow starts) -->
@@ -85,11 +61,11 @@
         </Border>
 
         <!-- Separator -->
-        <Separator Grid.Row="3" Margin="0,0,0,12"/>
+        <Separator Grid.Row="2" Margin="0,0,0,12"/>
 
         <!-- Refresh interval -->
-        <TextBlock Grid.Row="4" Text="Refresh Interval" FontWeight="SemiBold" Margin="0,0,0,6"/>
-        <ComboBox x:Name="IntervalCombo" Grid.Row="5"
+        <TextBlock Grid.Row="3" Text="Refresh Interval" FontWeight="SemiBold" Margin="0,0,0,6"/>
+        <ComboBox x:Name="IntervalCombo" Grid.Row="4"
                   Width="160" HorizontalAlignment="Left" Margin="0,0,0,12">
             <ComboBoxItem Content="1 minute"   Tag="1"/>
             <ComboBoxItem Content="5 minutes"  Tag="5"/>
@@ -98,11 +74,11 @@
         </ComboBox>
 
         <!-- Start with Windows -->
-        <CheckBox x:Name="StartupCheckBox" Grid.Row="6"
+        <CheckBox x:Name="StartupCheckBox" Grid.Row="5"
                   Content="Start with Windows" Margin="0,0,0,16"/>
 
         <!-- Save / Cancel buttons -->
-        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Save"   Width="70" Margin="0,0,8,0"
                     Padding="0,6" IsDefault="True" Click="SaveButton_Click"/>
             <Button Content="Cancel" Width="70"

@@ -3,11 +3,11 @@ namespace CopilotUsage.Models;
 public sealed class AppSettings
 {
 	/// <summary>
-	/// GitHub OAuth App Client ID used for the device authorization flow.
-	/// Register your own app at https://github.com/settings/applications/new
-	/// (enable Device Flow, set any callback URL) to show your app's name on
-	/// the GitHub authorization page instead of "GitHub CLI".
-	/// Leave empty to fall back to the built-in client ID.
+	/// Optional override for the GitHub OAuth App Client ID.
+	/// When empty (the default), the built-in "Copilot Usage" app Client ID is used.
+	/// Only set this manually in settings.json if your organisation's GitHub policy
+	/// blocks the built-in app and you need to supply your own OAuth App Client ID.
+	/// This field is not exposed in the Settings UI.
 	/// </summary>
 	public string GitHubClientId { get; set; } = string.Empty;
 

@@ -24,7 +24,6 @@ public partial class SettingsWindow : Window
 	{
 		var settings = SettingsService.Load();
 
-		ClientIdTextBox.Text = settings.GitHubClientId;
 		StartupCheckBox.IsChecked = settings.StartWithWindows;
 
 		foreach ( ComboBoxItem item in IntervalCombo.Items )
@@ -45,10 +44,6 @@ public partial class SettingsWindow : Window
 		{
 			SetAuthorizedState();
 		}
-		else if ( string.IsNullOrWhiteSpace( settings.GitHubClientId ) )
-		{
-			SetStatus( "Enter a Client ID above (click 'Register app ↗' to create one), then click Authorize.", WpfBrushes.Gray );
-		}
 	}
 
 
@@ -68,15 +63,6 @@ public partial class SettingsWindow : Window
 
 	private async void AuthorizeButton_Click( object sender, RoutedEventArgs e )
 	{
-		var clientId = ClientIdTextBox.Text.Trim();
-
-		if ( string.IsNullOrWhiteSpace( clientId ) )
-		{
-			SetStatus( "Please enter your GitHub OAuth App Client ID first.", WpfBrushes.DarkOrange );
-			ClientIdTextBox.Focus();
-			return;
-		}
-
 		AuthorizeButton.IsEnabled = false;
 		CodePanel.Visibility = Visibility.Collapsed;
 		SetStatus( "Requesting device code from GitHub...", WpfBrushes.Gray );
@@ -84,7 +70,7 @@ public partial class SettingsWindow : Window
 		m_PollCts?.Cancel();
 		m_PollCts = new CancellationTokenSource();
 
-		var authService = new GitHubAuthService( clientId );
+		var authService = new GitHubAuthService( SettingsService.Load().GitHubClientId );
 
 		try
 		{
@@ -151,7 +137,6 @@ public partial class SettingsWindow : Window
 			settings.AccessToken = m_PendingAccessToken;
 		}
 
-		settings.GitHubClientId = ClientIdTextBox.Text.Trim();
 		settings.StartWithWindows = StartupCheckBox.IsChecked == true;
 
 		if ( IntervalCombo.SelectedItem is ComboBoxItem selected &&
@@ -172,13 +157,6 @@ public partial class SettingsWindow : Window
 		m_PollCts?.Cancel();
 		DialogResult = false;
 		Close();
-	}
-
-
-	private void Hyperlink_RequestNavigate( object sender, System.Windows.Navigation.RequestNavigateEventArgs e )
-	{
-		Process.Start( new ProcessStartInfo( e.Uri.AbsoluteUri ) { UseShellExecute = true } );
-		e.Handled = true;
 	}
 
 
