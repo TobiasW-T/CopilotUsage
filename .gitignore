@@ -1,0 +1,55 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+[Tt]est[Rr]esults/
+*.user
+*.suo
+*.userprefs
+*.userosscache
+*.VC.db
+*.pdb
+*.cache
+*.log
+*.zip
+*.nupkg
+*.snk
+*.sln.docstates
+*.csproj.user
+*.db
+
+# Rider / JetBrains
+.idea/
+*.iml
+
+# NuGet
+packages/
+.nuget/
+*.nupkg
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated files
+*.generated.cs
+Generated*/
+
+# Misc
+temp/
+obj/**/temp/
+
+# PowerShell
+*.ps1xml
+
+# Composer / Node (if present)
+node_modules/
+
+# Local settings
+local.settings.json
+
+# Visual Studio Code
+.vscode/
+
+# Ignore local Copilot session folders if present (relative)
+.copilot/

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CopilotUsage": {
+      "commandName": "Project"
+    },
+    "CopilotUsage Demo": {
+      "commandName": "Project",
+      "commandLineArgs": "--demo"
+    }
+  }
+}

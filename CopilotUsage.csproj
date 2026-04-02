@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>Resources\copilot_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="temp\**" />
+  </ItemGroup>
+
+  <!-- Regenerate copilot_icon.ico from the same WPF paths used at runtime so all icons are consistent. -->
+  <Target Name="GenerateCopilotIcon" BeforeTargets="CoreCompile">
+    <Exec Command="powershell.exe -Sta -NoProfile -ExecutionPolicy Bypass -File &quot;$(ProjectDir)generate-icon.ps1&quot; -OutputPath &quot;$(ProjectDir)Resources\copilot_icon.ico&quot;"
+          ContinueOnError="true"/>
+  </Target>
+
+</Project>
