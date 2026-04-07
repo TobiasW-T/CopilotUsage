@@ -1,25 +1,8 @@
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using DrawingColor = System.Drawing.Color;
 
 namespace CopilotUsage.Helpers;
-
-/// <summary>
-/// Selects the visual style used to show usage in the tray icon.
-/// Change <see cref="TrayIconHelper.CurrentStyle"/> and rebuild to compare styles.
-/// </summary>
-internal enum IconVisualization
-{
-	/// <summary>The icon is filled from the bottom upward with the usage colour.</summary>
-	LiquidFill,
-
-	/// <summary>A pie/donut sector sweeps clockwise from 12 o'clock proportional to usage.</summary>
-	Pie,
-
-	/// <summary>A thick coloured line traces the icon perimeter clockwise from the top-left corner.</summary>
-	BorderProgress,
-}
 
 internal static class TrayIconHelper
 {
@@ -29,128 +12,19 @@ internal static class TrayIconHelper
 	// Corner radius of the icon background, matching the WPF resource (4 / 24 * 32 ≈ 5.3)
 	private const float CornerRadius = 5.3f;
 
-	// ── Change this constant and rebuild to switch between visualization styles ──
-	public const IconVisualization CurrentStyle = IconVisualization.BorderProgress;
-
-	// LiquidFill constants
-	private const int TintAlpha = 70;
-
 	// BorderProgress constants
 	private const float BorderWidth = 4.0f;
-
-	// Pie constants — donut ring dimensions (outer fills icon minus 1px margin, inner leaves logo visible)
-	private const float PieOuter = IconSize - 2f;
-	private const float PieInner = 14f;
 
 	private static Bitmap? s_CopilotBase;
 	private static Bitmap? s_CopilotPaths;
 
 
 	/// <summary>
-	/// Creates the tray icon for the given usage percentage using <see cref="CurrentStyle"/>.
+	/// Creates the tray icon for the given usage percentage.
+	/// Three layers: dark bg → Copilot paths → thick progress line tracing the perimeter clockwise.
 	/// Pass <c>null</c> when data is unavailable.
 	/// </summary>
 	public static Icon CreateUsageIcon( double? usagePercent )
-	{
-		return CurrentStyle switch
-		{
-			IconVisualization.Pie => CreatePieIcon( usagePercent ),
-			IconVisualization.BorderProgress => CreateBorderProgressIcon( usagePercent ),
-			_ => CreateLiquidFillIcon( usagePercent ),
-		};
-	}
-
-
-	// ── Liquid fill ──────────────────────────────────────────────────────────────
-
-	/// <summary>
-	/// Four layers: dark bg → opaque colour fill from bottom → Copilot paths → full tint overlay.
-	/// </summary>
-	private static Icon CreateLiquidFillIcon( double? usagePercent )
-	{
-		using var bitmap = new Bitmap( IconSize, IconSize, System.Drawing.Imaging.PixelFormat.Format32bppArgb );
-		using var g = Graphics.FromImage( bitmap );
-		g.SmoothingMode = SmoothingMode.AntiAlias;
-
-		DrawBackground( g );
-
-		var fillRgb = GetFillColorRgb( usagePercent );
-		var fillHeight = usagePercent.HasValue
-			? (int) Math.Round( usagePercent.Value / 100.0 * IconSize )
-			: IconSize;
-
-		if ( fillHeight > 0 )
-		{
-			using var fillPath = RoundedRect( 0, 0, IconSize, IconSize, CornerRadius );
-			g.SetClip( fillPath );
-			using ( var fillBrush = new SolidBrush( fillRgb ) )
-			{
-				g.FillRectangle( fillBrush, 0, IconSize - fillHeight, IconSize, fillHeight );
-			}
-			g.ResetClip();
-		}
-
-		DrawCopilotPaths( g );
-
-		var tintColor = DrawingColor.FromArgb( TintAlpha, fillRgb.R, fillRgb.G, fillRgb.B );
-		using ( var tintPath = RoundedRect( 0, 0, IconSize, IconSize, CornerRadius ) )
-		using ( var tintBrush = new SolidBrush( tintColor ) )
-		{
-			g.FillPath( tintBrush, tintPath );
-		}
-
-		return BitmapToIcon( bitmap );
-	}
-
-
-	// ── Pie / donut ──────────────────────────────────────────────────────────────
-
-	/// <summary>
-	/// Three layers: dark bg → donut sector sweep from 12 o'clock → Copilot paths on top.
-	/// The donut ring leaves the central logo area unobscured.
-	/// </summary>
-	private static Icon CreatePieIcon( double? usagePercent )
-	{
-		using var bitmap = new Bitmap( IconSize, IconSize, System.Drawing.Imaging.PixelFormat.Format32bppArgb );
-		using var g = Graphics.FromImage( bitmap );
-		g.SmoothingMode = SmoothingMode.AntiAlias;
-
-		DrawBackground( g );
-
-		var fillRgb = GetFillColorRgb( usagePercent );
-		float sweep = usagePercent.HasValue ? (float) ( usagePercent.Value * 3.6 ) : 360f;
-
-		if ( sweep > 0 )
-		{
-			// Build an annular (donut) sector: outer pie minus inner circle
-			float outerMargin = ( IconSize - PieOuter ) / 2f;
-			float innerMargin = ( IconSize - PieInner ) / 2f;
-
-			using var sectorPath = new GraphicsPath();
-			// Outer arc: -90° (top) clockwise
-			sectorPath.AddArc( outerMargin, outerMargin, PieOuter, PieOuter, -90f, sweep );
-			// Inner arc: reverse direction to create the hole
-			sectorPath.AddArc( innerMargin, innerMargin, PieInner, PieInner,
-				-90f + sweep, -sweep );
-			sectorPath.CloseFigure();
-
-			using var fillBrush = new SolidBrush( fillRgb );
-			g.FillPath( fillBrush, sectorPath );
-		}
-
-		DrawCopilotPaths( g );
-
-		return BitmapToIcon( bitmap );
-	}
-
-
-	// ── Border progress ──────────────────────────────────────────────────────────
-
-	/// <summary>
-	/// Three layers: dark bg → Copilot paths → thick progress line tracing the perimeter clockwise.
-	/// The Copilot logo is completely unobscured.
-	/// </summary>
-	private static Icon CreateBorderProgressIcon( double? usagePercent )
 	{
 		using var bitmap = new Bitmap( IconSize, IconSize, System.Drawing.Imaging.PixelFormat.Format32bppArgb );
 		using var g = Graphics.FromImage( bitmap );

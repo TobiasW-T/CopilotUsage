@@ -8,6 +8,8 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>Resources\copilot_icon.ico</ApplicationIcon>
+    <!-- Bundle WPF native DLLs into the single-file EXE (extracted to temp at runtime). -->
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@
         Title="About Copilot Usage"
         ResizeMode="NoResize"
         SizeToContent="Height"
-        Width="300"
+        Width="380"
         WindowStartupLocation="CenterScreen"
         ShowInTaskbar="False">
 
@@ -21,10 +21,22 @@
                    HorizontalAlignment="Center" Margin="0,0,0,12"/>
 
         <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center"
-                   Foreground="#495057" FontSize="12" Margin="0,0,0,20"
+                   Foreground="#495057" FontSize="12" Margin="0,0,0,12"
                    TextAlignment="Center">
             Shows your GitHub Copilot monthly premium
-            <LineBreak/>request consumption in the system tray.
+            request consumption in the system tray.
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Center" Foreground="#495057" FontSize="12" Margin="0,0,0,4">
+            Created by Tobias Wenzel
+            <LineBreak/>
+            <Hyperlink NavigateUri="mailto:tobias_wenzel@trimble.com"
+                       RequestNavigate="Hyperlink_RequestNavigate">tobias_wenzel@trimble.com</Hyperlink>
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,20">
+            <Hyperlink NavigateUri="https://github.com/Trimble-Advanced-Positioning/CopilotUsage"
+                       RequestNavigate="Hyperlink_RequestNavigate">github.com/Trimble-Advanced-Positioning/CopilotUsage</Hyperlink>
         </TextBlock>
 
         <Button Content="OK" Width="80" HorizontalAlignment="Center" Padding="0,6"

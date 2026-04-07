@@ -15,7 +15,7 @@ public sealed class AppSettings
 	public string AccessToken { get; set; } = string.Empty;
 
 	/// <summary>Refresh interval in minutes. Valid values: 1, 5, 15, 60.</summary>
-	public int RefreshIntervalMinutes { get; set; } = 15;
+	public int RefreshIntervalMinutes { get; set; } = 5;
 
 	public bool StartWithWindows { get; set; } = false;
 }
