@@ -4,7 +4,7 @@
         Title="About Copilot Usage"
         ResizeMode="NoResize"
         SizeToContent="Height"
-        Width="380"
+        Width="350"
         WindowStartupLocation="CenterScreen"
         ShowInTaskbar="False">
 
@@ -35,8 +35,8 @@
         </TextBlock>
 
         <TextBlock HorizontalAlignment="Center" FontSize="12" Margin="0,0,0,20">
-            <Hyperlink NavigateUri="https://github.com/Trimble-Advanced-Positioning/CopilotUsage"
-                       RequestNavigate="Hyperlink_RequestNavigate">github.com/Trimble-Advanced-Positioning/CopilotUsage</Hyperlink>
+            <Hyperlink NavigateUri="https://github.com/TobiasW-T/CopilotUsage"
+                       RequestNavigate="Hyperlink_RequestNavigate">github.com/TobiasW-T/CopilotUsage</Hyperlink>
         </TextBlock>
 
         <Button Content="OK" Width="80" HorizontalAlignment="Center" Padding="0,6"

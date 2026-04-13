@@ -158,4 +158,4 @@ In demo mode:
 ## Author
 
 Created by [Tobias Wenzel](mailto:tobias_wenzel@trimble.com)  
-Homepage: <https://github.com/Trimble-Advanced-Positioning/CopilotUsage>
+Homepage: <https://github.com/TobiasW-T/CopilotUsage>
